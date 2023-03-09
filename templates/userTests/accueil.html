@@ -1,0 +1,276 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+
+
+   
+
+<div class="container1">
+<a href="#"> <img src="static/images/logo1.png" alt="" width="100"></a>
+      <!-- meunu nav -->
+      <nav>
+          <ul>
+              <li><a href="#"> Accueil </a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <li> <a href="news"> Actualités </a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <li><a href="#"> Catégories associations </a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <li><a href="#"> Agir </a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <li> <a href="#"> Nous contacter </a></li>
+          </ul>
+      </nav>
+      <!-- Partie inscription  -->
+      <div class="letd1">
+        {% if user.is_authenticated %}
+          <a href="logout">Se deconnecter </a>
+        {% else %}
+          <a href="user_login">Se Connecter </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="register">S'inscrire <i class="fa-solid fa-right-to-bracket"></i></a>
+        {% endif %}
+         
+      </div>
+  
+  </div>
+
+    </head>
+
+<body>
+
+  <div class="container-fluid">
+
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="1000">
+          <img src="static/images/gerer+association.png" class="d-block w-100" alt="img1" height="800" >
+        </div>
+        <div class="carousel-item" data-bs-interval="1000">
+          <img src="static/images/senegal.jpg" class="d-block w-100" alt="img2" height="800">
+        </div>
+        <div class="carousel-item">
+          <img src="static/images/galsen.jpg" class="d-block w-100" alt="img3" height="800" >
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+  </div>
+<br><br>
+
+  <div class="container-fluid text-center">
+
+    <h2><u>RECHERCHER UNE ASSOCIATION</u></h2>
+
+    <div class="container-md" id="searchTab"><br>
+        <div class="row mb-3">
+            <form class="form-inlin" action="{% url 'accueil' %}">
+              <label for="inputSearch" class="col-sm-3 col-form-label"></label><br>
+              <input class="form-control form-control-lg mr-sm-2" type="search" id="tab"
+              placeholder="Rechercher une association par mots clés" 
+              aria-label="Rechercher" name="search">
+              <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" id="butonSearch">Rechercher</button>
+            </form>
+          </div>
+  </div>
+<br><br>
+<h1 align="center"> <b>Actualités</b> </h1v?zz>
+  <br><br>
+<div class="container">
+  <div class="row">
+{% for post in posts %}
+    <div class="col-md-4">
+      <div class="card" style="width: 18rem;">
+        <img src="{{post.thumbnail.url}}" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title">{{post.title}}</h5>
+          <p class="card-text">{{post.text|slice:":80"}}</p>
+          <p class="card-text text-bg-success"><b>{{post.author}}</b></p>
+        </div>  
+        {% if user.is_authenticated and post.author == user %}
+        <a href="update/{{post.id}}" class="btn btn-outline-danger" id="{{posts.id}}">Modifier</a>
+        <a href="actu_delete/{{post.id}}" class="btn btn-outline-danger" id="{{posts.id}}">Supprimer</a>
+        {% endif %}
+      </div>
+    </div>
+{% endfor %}
+
+  </div>
+</div>
+
+<br><br>
+
+<script>
+$(document).ready(function() {
+  $('.animate__animated').waypoint(function() {
+    $(this.element).addClass('animate__delay-2s');
+    $(this.element).addClass('animate__faster');
+    $(this.element).addClass('animate__fadeIn');
+  }, { offset: '75%' });
+});
+
+</script>
+
+
+<div class="container-fluid">
+
+  <div class="container-md-9">
+<div class="row">
+  <div class="col-6 col-sm-6 animate__animated animate__fadeInLeft" id="imgMains">
+    <img src="{% static 'images/mains.jpg' %}" alt="My image" >
+  </div>
+  <div class="col-6 col-sm-6 animate__animated animate__fadeInRight" id="text1">
+    <p> En travaillant ensemble et en unissant nos forces, nous pouvons accomplir <br>
+      des choses extraordinaires.
+      La collaboration et la coopération <br>
+      sont essentielles pour réaliser des projets durables et significatifs.
+      <br>
+          Mbollo Moy Dollé est une plateforme qui permet de regrouper l’ensemble <br>
+           des associations qui œuvrent dans le social afin de faciliter <br>
+           la prise de contact entre eux, et avec la population. En effet à travers <br>
+           cette plateforme nous souhaitons donner la possibilité à toute personne <br>
+            dans le besoin ou voulant aider des personnes dans le besoin,<br>
+           d’obtenir les bonnes informations et de pouvoir agir en conséquence.
+      </p>
+  </div>
+</div>
+  </div>
+</div>
+
+<br><br><br>
+<br><br><br>
+<h2 id="text2">A propos de Notre Equipe</h2>
+  <div class="container" id="teamBg">
+    <div class="row align-items-center h-100" id="teamCadre">
+      <div class="col-sm-6 col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <img src="static/images/membre1.jpg" class="card-img rounded-circle mb-2" width="250" height="250">
+            <h5 class="card-title">Alioune</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <img src="static/images/membre2.jpg" class="card-img rounded-circle mb-2" width="250" height="250">
+            <h5 class="card-title">Ibrahima</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <img src="static/images/membre3.jpg" class="card-img rounded-circle mb-2" width="250" height="250">
+            <h5 class="card-title">Zackaria</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <img src="static/images/membre4.jpg" class="card-img rounded-circle mb-2" width="250" height="250">
+            <h5 class="card-title">Babacar</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>   
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<br><br>
+
+<h2 id="text3">Contactez-nous</h2>
+<div class="container" id="loginForm">
+    <form id="secondForm">
+      <div class="row g-3">
+        <div class="col">
+          <label for="exampleFormControlTextarea1" class="form-label"> <b>Prénom</b> </label>
+          <input type="text" class="form-control" placeholder="Prenom" aria-label="First name">
+        </div>
+        <div class="col">
+          <label for="exampleFormControlTextarea1" class="form-label">  <b>Nom</b> </label>
+          <input type="text" class="form-control" placeholder="Nom" aria-label="Last name">
+        </div>
+      </div> <br><br>
+      <div class="row g-3">
+        <div class="col">
+          <label for="exampleFormControlTextarea1" class="form-label"> <b>Email</b> </label>
+          <input type="text" class="form-control" placeholder="Exemple: myEmail@gmail.com" aria-label="Email">
+        </div>
+        <div class="col">
+          <label for="exampleFormControlTextarea1" class="form-label"> <b>Numéro de téléphone</b> </label>
+          <input type="text" class="form-control" placeholder="Exemple: +221 77 000 00 00" aria-label="number">
+        </div>
+      </div><br><br>
+      <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label"> <b>Message</b> </label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+      </div><br><br><br>
+      <div class="col-12" id="buton2">
+        <button type="submit" class="btn"> <b>Envoyez</b>  <i class="fa-sharp fa-solid fa-paper-plane-top"></i></button>
+      </div> 
+      </form>
+</div>
+<br><br><br><br>
+<br><br><br>
+
+
+<footer class="container-fluid text-black py-3"id="foot">
+  <div class="container" >
+    <div class="row">
+      <div class="col-md-4 text-md-start">
+        <h3>Mbollo Moy Dollé</h3><br>
+        <a href="#">A propos de nous</a><br>
+        <a href="#">Comment ca marche?</a><br>
+        <a href="#">FAQS</a><br>
+        <a href="#">Termes et Conditions</a>
+      </div>
+      <div class="col-md-4 text-md-center">
+<h3>Menu</h3><br>
+<a href="#">Accueil</a><br>
+<a href="#">Actualités</a><br>
+<a href="#">Agir</a><br>
+<a href="#">Associations</a>
+
+      </div>
+      <div class="col-md-4 text-md-end">
+        <h3>Contact</h3><br>
+        <a href="#"><i class="fa-sharp fa-solid fa-envelope">&nbsp;&nbsp;</i>contact@MbolloMoyDolle.sn</a><br><br>
+        <a href="#">   <i class="fa-brands fa-square-facebook"></i>
+          <i class="fa-brands fa-square-instagram"></i>
+          <i class="fa-brands fa-square-twitter"></i>
+          <i class="fa-brands fa-linkedin"></i></a>
+      </div><br><br><br>
+    </div> <br>
+    <hr>
+    <br>
+    <div class="row">
+      <div class="col-md-12 text-md-center">
+        <p>&copy; 2023 by Defarsci. Tous droits réservés</p>
+      </div>
+    </div>
+  
+  </div>
+</footer>
+</body>
+</html>
